@@ -1,0 +1,46 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% Simple section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\hrule]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+% Remove page numbers
+\pagestyle{empty}
+
+\begin{document}
+
+% Header
+\begin{center}
+{\LARGE\bfseries <<NAME>>}\\[0.2cm]
+<<EMAIL>> | <<PHONE>> | <<LOCATION>>\\[0.1cm]
+<<LINKEDIN>> | <<GITHUB>>
+\end{center}
+
+\vspace{0.4cm}
+
+% Education
+\section{Education}
+<<EDUCATION>>
+
+% Skills
+\section{Skills}
+<<SKILLS>>
+
+% Projects
+\section{Projects}
+<<PROJECTS>>
+
+% Achievements
+\section{Achievements}
+\begin{itemize}[leftmargin=*]
+<<ACHIEVEMENTS>>
+\end{itemize}
+
+% Custom Sections
+<<CUSTOM_SECTIONS>>
+
+\end{document}

@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{fontspec}
+
+% Define colors
+\definecolor{accent}{RGB}{34,197,94}
+\definecolor{darkgray}{RGB}{64,64,64}
+
+% Custom section formatting
+\titleformat{\section}{\large\bfseries\color{accent}}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+% Remove page numbers
+\pagestyle{empty}
+
+\begin{document}
+
+% Header
+\begin{center}
+{\Huge\bfseries\color{darkgray} <<NAME>>}\\[0.3cm]
+{\large <<EMAIL>> | <<PHONE>> | <<LOCATION>>}\\[0.2cm]
+{\large LinkedIn: <<LINKEDIN>> | GitHub: <<GITHUB>>}
+\end{center}
+
+\vspace{0.5cm}
+
+% Education Section
+\section{Education}
+<<EDUCATION>>
+
+\vspace{0.3cm}
+
+% Skills Section
+\section{Technical Skills}
+<<SKILLS>>
+
+\vspace{0.3cm}
+
+% Projects Section
+\section{Projects}
+<<PROJECTS>>
+
+% Achievements Section
+\section{Achievements}
+\begin{itemize}[leftmargin=*]
+<<ACHIEVEMENTS>>
+\end{itemize}
+
+% Custom Sections
+<<CUSTOM_SECTIONS>>
+
+\end{document}

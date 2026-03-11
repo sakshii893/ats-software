@@ -1,0 +1,46 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{fontspec}
+
+% Define colors for tech theme
+\definecolor{techgreen}{RGB}{34,197,94}
+\definecolor{codegray}{RGB}{88,88,88}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries\color{techgreen}}{}{0em}{}[\color{techgreen}\hrule]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% Header with tech styling
+\begin{center}
+{\Huge\bfseries\color{codegray} <<NAME>>}\\[0.3cm]
+{\large\texttt{<<EMAIL>>} | \texttt{<<PHONE>>} | <<LOCATION>>}\\[0.2cm]
+{\large\texttt{<<LINKEDIN>>} | \texttt{<<GITHUB>>}}
+\end{center}
+
+\vspace{0.5cm}
+
+\section{Education}
+<<EDUCATION>>
+
+\section{Technical Stack}
+\texttt{<<SKILLS>>}
+
+\section{Projects \& Development}
+<<PROJECTS>>
+
+\section{Achievements}
+\begin{itemize}[leftmargin=*]
+<<ACHIEVEMENTS>>
+\end{itemize}
+
+<<CUSTOM_SECTIONS>>
+
+\end{document}

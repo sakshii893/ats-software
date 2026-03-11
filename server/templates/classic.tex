@@ -1,0 +1,40 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% Traditional formatting
+\titleformat{\section}{\large\bfseries\scshape}{}{0em}{}[\hrule]
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% Traditional header
+\begin{center}
+{\Large\bfseries <<NAME>>}\\[0.2cm]
+<<EMAIL>> $\bullet$ <<PHONE>> $\bullet$ <<LOCATION>>\\[0.1cm]
+<<LINKEDIN>> $\bullet$ <<GITHUB>>
+\end{center}
+
+\vspace{0.4cm}
+
+\section{Education}
+<<EDUCATION>>
+
+\section{Skills}
+<<SKILLS>>
+
+\section{Projects}
+<<PROJECTS>>
+
+\section{Achievements}
+\begin{itemize}[leftmargin=*]
+<<ACHIEVEMENTS>>
+\end{itemize}
+
+<<CUSTOM_SECTIONS>>
+
+\end{document}
