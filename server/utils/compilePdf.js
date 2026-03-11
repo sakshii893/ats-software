@@ -51,10 +51,9 @@ async function compilePdf(latexContent) {
   }
 }
 
-// Function to create a properly formatted HTML resume from LaTeX
+// Function to create ATS-friendly HTML resume (no colors, no emojis)
 async function createFormattedHtmlResume(latexContent, outputPath) {
   try {
-    // Simple extraction with safe defaults
     const extractText = (pattern, defaultValue = '') => {
       try {
         const match = latexContent.match(pattern);
@@ -65,13 +64,13 @@ async function createFormattedHtmlResume(latexContent, outputPath) {
     };
 
     // Extract basic info
-    const name = extractText(/\\bfseries[^}]*\s+([A-Z][a-zA-Z\s]+)/, 'Your Name');
+    const name = extractText(/\\scshape\s+([A-Z][a-zA-Z\s]+)/, 'Your Name');
     const email = extractText(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/, '');
     const phone = extractText(/(\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9})/, '');
-    const linkedin = extractText(/LinkedIn[:\s]+([^\s\\}|]+)/, '');
-    const github = extractText(/GitHub[:\s]+([^\s\\}|]+)/, '');
+    const linkedin = extractText(/linkedin[^}]*\}\{\\underline\{([^}]+)\}\}/, '');
+    const github = extractText(/github[^}]*\}\{\\underline\{([^}]+)\}\}/, '');
 
-    // Extract sections - simple approach
+    // Extract sections
     const extractSection = (sectionName) => {
       try {
         const regex = new RegExp(`\\\\section\\{${sectionName}\\}([^]*?)(?=\\\\section|\\\\end\\{document\\}|$)`, 'i');
@@ -86,9 +85,9 @@ async function createFormattedHtmlResume(latexContent, outputPath) {
     };
 
     const education = extractSection('Education');
-    const skills = extractSection('Technical Skills|Skills|Technical Stack');
-    const projects = extractSection('Projects|Projects & Development|Research & Projects');
-    const achievements = extractSection('Achievements|Achievements & Publications');
+    const skills = extractSection('Technical Skills');
+    const projects = extractSection('Projects');
+    const achievements = extractSection('Achievements');
 
     const htmlContent = `
 <!DOCTYPE html>
@@ -105,178 +104,163 @@ async function createFormattedHtmlResume(latexContent, outputPath) {
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        
-        .resume-container {
-            max-width: 850px;
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.5;
+            color: #000;
+            background: #fff;
+            padding: 0.5in;
+            max-width: 8.5in;
             margin: 0 auto;
-            background: white;
-            padding: 40px 50px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #22c55e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #000;
         }
         
         .header h1 {
-            font-size: 2.5em;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-weight: 700;
+            font-size: 24pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
         }
         
         .contact-info {
-            font-size: 0.95em;
-            color: #555;
-            margin-top: 10px;
+            font-size: 10pt;
+            margin-top: 5px;
         }
         
         .contact-info span {
-            margin: 0 10px;
+            margin: 0 5px;
         }
         
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
         
         .section h2 {
-            font-size: 1.4em;
-            color: #22c55e;
-            margin-bottom: 12px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #22c55e;
-            font-weight: 600;
+            font-size: 12pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #000;
         }
         
         .section-content {
-            margin-left: 10px;
-            color: #444;
-            line-height: 1.8;
-        }
-        
-        .skills-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        
-        .skill-tag {
-            background: #e8f5e9;
-            color: #22c55e;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 500;
+            font-size: 10pt;
+            line-height: 1.4;
         }
         
         ul {
             margin-left: 20px;
-            margin-top: 8px;
+            margin-top: 5px;
         }
         
         li {
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+        }
+        
+        a {
+            color: #000;
+            text-decoration: underline;
         }
         
         @media print {
             body {
-                background: white;
                 padding: 0;
             }
-            .resume-container {
-                box-shadow: none;
-                padding: 20px;
+            a {
+                text-decoration: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="resume-container">
-        <div class="header">
-            <h1>${name}</h1>
-            <div class="contact-info">
-                ${email ? `<span>✉ ${email}</span>` : ''}
-                ${phone ? `<span>📞 ${phone}</span>` : ''}
-                ${linkedin ? `<span>🔗 ${linkedin}</span>` : ''}
-                ${github ? `<span>💻 ${github}</span>` : ''}
-            </div>
+    <div class="header">
+        <h1>${name}</h1>
+        <div class="contact-info">
+            ${phone ? `${phone}` : ''}
+            ${email && phone ? ' | ' : ''}
+            ${email ? `<a href="mailto:${email}">${email}</a>` : ''}
+            ${linkedin && (email || phone) ? ' | ' : ''}
+            ${linkedin ? `<a href="${linkedin}">${linkedin}</a>` : ''}
+            ${github && (linkedin || email || phone) ? ' | ' : ''}
+            ${github ? `<a href="${github}">${github}</a>` : ''}
         </div>
-
-        ${education ? `
-        <div class="section">
-            <h2>Education</h2>
-            <div class="section-content">
-                ${education
-                    .replace(/\\\\/g, '<br>')
-                    .replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>')
-                    .replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>')
-                    .replace(/\\texttt\{([^}]+)\}/g, '<code>$1</code>')
-                }
-            </div>
-        </div>
-        ` : ''}
-
-        ${skills ? `
-        <div class="section">
-            <h2>Skills</h2>
-            <div class="section-content">
-                ${skills
-                    .replace(/\\\\/g, '<br>')
-                    .replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>')
-                    .replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>')
-                    .replace(/\\texttt\{([^}]+)\}/g, '<code>$1</code>')
-                }
-            </div>
-        </div>
-        ` : ''}
-
-        ${projects ? `
-        <div class="section">
-            <h2>Projects</h2>
-            <div class="section-content">
-                ${projects
-                    .replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>')
-                    .replace(/\\\\/g, '<br>')
-                    .replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>')
-                    .replace(/\\texttt\{([^}]+)\}/g, '<code>$1</code>')
-                    .replace(/\\vspace\{[^}]+\}/g, '<br>')
-                }
-            </div>
-        </div>
-        ` : ''}
-
-        ${achievements ? `
-        <div class="section">
-            <h2>Achievements</h2>
-            <div class="section-content">
-                <ul>
-                    ${achievements
-                        .split('\\item')
-                        .filter(item => item && item.trim())
-                        .map(item => `<li>${item.trim()}</li>`)
-                        .join('')
-                    }
-                </ul>
-            </div>
-        </div>
-        ` : ''}
     </div>
+
+    ${education ? `
+    <div class="section">
+        <h2>Education</h2>
+        <div class="section-content">
+            ${education
+                .replace(/\\\\/g, '<br>')
+                .replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>')
+                .replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>')
+                .replace(/\\resumeSubHeadingListStart/g, '')
+                .replace(/\\resumeSubHeadingListEnd/g, '')
+                .replace(/\\resumeSubheading/g, '')
+            }
+        </div>
+    </div>
+    ` : ''}
+
+    ${skills ? `
+    <div class="section">
+        <h2>Technical Skills</h2>
+        <div class="section-content">
+            ${skills
+                .replace(/\\\\/g, '<br>')
+                .replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>')
+                .replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>')
+                .replace(/\\begin\{itemize\}[^]]*\\item/g, '')
+                .replace(/\\end\{itemize\}/g, '')
+            }
+        </div>
+    </div>
+    ` : ''}
+
+    ${projects ? `
+    <div class="section">
+        <h2>Projects</h2>
+        <div class="section-content">
+            ${projects
+                .replace(/\\resumeSubHeadingListStart/g, '<ul>')
+                .replace(/\\resumeSubHeadingListEnd/g, '</ul>')
+                .replace(/\\resumeProjectHeading/g, '<li>')
+                .replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>')
+                .replace(/\\\\/g, '<br>')
+                .replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>')
+            }
+        </div>
+    </div>
+    ` : ''}
+
+    ${achievements ? `
+    <div class="section">
+        <h2>Achievements</h2>
+        <div class="section-content">
+            <ul>
+                ${achievements
+                    .split('\\resumeItem')
+                    .filter(item => item && item.trim())
+                    .map(item => `<li>${item.replace(/\{|\}/g, '').trim()}</li>`)
+                    .join('')
+                }
+            </ul>
+        </div>
+    </div>
+    ` : ''}
 </body>
 </html>`;
 
     await fs.writeFile(outputPath, htmlContent);
   } catch (error) {
-    // If parsing fails, create a simple fallback
     const simpleHtml = `
 <!DOCTYPE html>
 <html lang="en">
@@ -284,9 +268,9 @@ async function createFormattedHtmlResume(latexContent, outputPath) {
     <meta charset="UTF-8">
     <title>Resume</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
-        h1 { color: #22c55e; }
-        pre { background: #f5f5f5; padding: 15px; border-radius: 5px; white-space: pre-wrap; }
+        body { font-family: 'Times New Roman', Times, serif; max-width: 8.5in; margin: 20px auto; padding: 20px; color: #000; }
+        h1 { font-size: 18pt; border-bottom: 1px solid #000; }
+        pre { font-family: 'Courier New', monospace; font-size: 9pt; white-space: pre-wrap; }
     </style>
 </head>
 <body>
@@ -304,10 +288,8 @@ function compileOnline(latexContent, outputPath) {
   return new Promise((resolve, reject) => {
     const axios = require('axios');
     
-    // Use LaTeX.Online API
     const url = 'https://latexonline.cc/compile';
     
-    // Create form data
     const FormData = require('form-data');
     const form = new FormData();
     form.append('file', Buffer.from(latexContent), {
@@ -315,14 +297,12 @@ function compileOnline(latexContent, outputPath) {
       contentType: 'text/plain'
     });
     
-    // Make request
     axios.post(url, form, {
       headers: form.getHeaders(),
       responseType: 'arraybuffer',
       timeout: 30000
     })
     .then(async (response) => {
-      // Save PDF
       await fs.writeFile(outputPath, response.data);
       resolve();
     })

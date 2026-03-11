@@ -1,45 +1,76 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[margin=0.8in]{geometry}
-\usepackage{enumitem}
+\documentclass[letterpaper,11pt]{article}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
 \usepackage{titlesec}
-\usepackage{xcolor}
-\usepackage{fontspec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
 
-% Define colors for tech theme
-\definecolor{techgreen}{RGB}{34,197,94}
-\definecolor{codegray}{RGB}{88,88,88}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
 
-% Section formatting
-\titleformat{\section}{\large\bfseries\color{techgreen}}{}{0em}{}[\color{techgreen}\hrule]
-\titlespacing{\section}{0pt}{12pt}{6pt}
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
 
-\pagestyle{empty}
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{\vspace{-4pt}\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{\item\small{{#1 \vspace{-2pt}}}}
+\newcommand{\resumeSubheading}[4]{\vspace{-2pt}\item\begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}\textbf{#1} & #2 \\\textit{\small#3} & \textit{\small #4} \\\end{tabular*}\vspace{-7pt}}
+\newcommand{\resumeProjectHeading}[2]{\item\begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}\small#1 & #2 \\\end{tabular*}\vspace{-7pt}}
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
 
 \begin{document}
 
-% Header with tech styling
 \begin{center}
-{\Huge\bfseries\color{codegray} <<NAME>>}\\[0.3cm]
-{\large\texttt{<<EMAIL>>} | \texttt{<<PHONE>>} | <<LOCATION>>}\\[0.2cm]
-{\large\texttt{<<LINKEDIN>>} | \texttt{<<GITHUB>>}}
+\textbf{\Huge \scshape <<NAME>>} \\ \vspace{1pt}
+\small <<PHONE>> $|$ \href{mailto:<<EMAIL>>}{\underline{<<EMAIL>>}} $|$ 
+\href{<<LINKEDIN>>}{\underline{<<LINKEDIN>>}} $|$
+\href{<<GITHUB>>}{\underline{<<GITHUB>>}}
 \end{center}
 
-\vspace{0.5cm}
-
 \section{Education}
-<<EDUCATION>>
+\resumeSubHeadingListStart
+\resumeSubheading{<<EDUCATION>>}{}{}{}
+\resumeSubHeadingListEnd
 
-\section{Technical Stack}
-\texttt{<<SKILLS>>}
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small{\item{\textbf{Skills}{: <<SKILLS>>}}}
+\end{itemize}
 
-\section{Projects \& Development}
+\section{Projects}
+\resumeSubHeadingListStart
 <<PROJECTS>>
+\resumeSubHeadingListEnd
 
 \section{Achievements}
-\begin{itemize}[leftmargin=*]
+\resumeItemListStart
 <<ACHIEVEMENTS>>
-\end{itemize}
+\resumeItemListEnd
 
 <<CUSTOM_SECTIONS>>
 
